@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+
+    
+<style>
+.dm{width:100%;height:100%;border:1px solid #000}
+.dm .d_screen .d_mask{width:100%;height:380px;background:#000;opacity:0.5;
+ filter:alpha(opacity=50) z-index:1;}
+ .dm .d_screen .d_show div{font-size:22px;line-height:36px;font-weight:500;color:#fff;position:absolute;left:0;top:0;}
+</style>
+</head>
+
+<body>
+    <div id="container">
+	<div id="main-container">
+       
+
+        <main id="main" style="margin-left:5px">
+            
+
+           
+            <div style="text-align:center;margin-top:10px">
+                <div class="dm" style="border:0">
+					<div class="d_screen" style="border: 1px solid rgb(229, 229, 229);">
+						<div class="d_mask" style="background:#fff"></div>
+						<div class="d_show">
+							<!-- <div>text message</div>  -->
+						</div>
+					</div>
+			
+					<div class="send">
+						<div class="s_fiter">
+							<div class="s_con">
+								<p><input placeholder="说点什么?" class="s_txt" type="text" style="width:388px;
+  height: 34px;
+  border-radius: 3px;
+  border: 1px solid rgb(204, 204, 204);
+  padding-left: 10px;"/> </p><p>
+								<input type="button" value="发 射" class="s_sub" style="border: 1px solid rgb(230, 80, 30);color:rgb(230, 80, 30);
+  border-radius: 3px;
+  text-align: center;
+  padding: 0;
+  height: 35px;
+  line-height: 35px;
+  font-size: 14px;width:159px;background-color:white"/>
+								<input type="button" value="清 屏" class="s_del" style="border: 1px solid rgb(176, 168, 165);color:rgb(176, 168, 165);
+  border-radius: 3px;
+  text-align: center;
+  padding: 0;
+  height: 35px;
+  line-height: 35px;
+  font-size: 14px;width:159px;background-color:white" /> </p>
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+
+        </main>
+
+       </div>  
+       
+    </div>
+
+
+    <script src="https://cdn.wilddog.com/js/client/current/wilddog.js"></script>
+    <script src="https://cdn.wilddog.com/js/vendor/jquery-1.11.2.min.js"></script>
+
+
+    <script>
+
+$(document).ready(function() {
+	var ref = new Wilddog("https://danmu.wilddogio.com");
+	var arr = [];
+	
+	$(".s_sub").click(function() {
+		var text = $(".s_txt").val();
+		ref.child('message').push(text);
+		$(".s_txt").val('');
+	});
+	
+	$(".s_txt").keypress(function(event) {
+		if(event.keyCode == "13") {
+			$(".s_sub").trigger('click');
+		}
+	});
+	
+	$(".s_del").click(function() {
+		ref.remove();
+		arr = [];
+		$('.d_show').empty();
+	});
+	
+	ref.child('message').on('child_added', function(snapshot) {
+		var text = snapshot.val();
+		arr.push(text);
+		var textObj = $("<div>" + text + "</div>");
+		$(".d_show").append(textObj);
+		moveObj(textObj);
+	});
+	
+	ref.on('child_removed', function() {
+		arr = [];
+		$('.d_show').empty();
+	});
+	
+	var topMin = $('.d_mask').offset().top;
+	var topMax = topMin + $('.d_mask').height();
+	var _top = topMin;
+	
+	var moveObj = function(obj) {
+		var _left = $('.d_mask').width() - obj.width();
+		_top = _top + 50;
+		if(_top > (topMax - 50)){
+			_top = topMin;
+		}
+		obj.css({left:_left,top:_top,color:getReandomColor()});
+		var time = 20000 + 10000 * Math.random();
+		obj.animate({left:"-"+_left+"px"}, time, function(){
+			obj.remove();
+		});
+	}
+	
+	var getReandomColor = function() {
+		return '#'+(function(h){
+			return new Array(7-h.length).join("0")+h
+			})((Math.random()*0x1000000<<0).toString(16))
+	}
+	
+	var getAndRun = function() {
+		if (arr.length > 0) {
+			var n = Math.floor(Math.random() * arr.length + 1) - 1;  
+			var textObj = $("<div>" + arr[n] + "</div>");
+			$(".d_show").append(textObj);
+			moveObj(textObj);
+		}
+		
+		setTimeout(getAndRun, 3000);
+	}
+	
+	jQuery.fx.interval = 50;
+	getAndRun();
+});
+
+</script>
+
+
+   
+</body>
+
+</html>
