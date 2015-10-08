@@ -7,7 +7,7 @@ demo-js-danmu 是一个基于wilddog JavaScript SDK实现的弹幕。
 
 可以直接用浏览器访问app/index.html。
 
-[![一个demo页面的快照](danmu.png)]
+![一个demo页面的快照](danmu.png)
 
 
 ## 相关文档
