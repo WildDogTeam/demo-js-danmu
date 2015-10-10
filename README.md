@@ -10,6 +10,10 @@ demo-js-danmu 是一个基于wilddog JavaScript SDK实现的弹幕。
 ![一个demo页面的快照](danmu.png)
 
 
+## 更多示例
+
+这里分类汇总了 WildDog平台上的示例程序和开源应用，　链接地址：[https://github.com/WildDogTeam/wilddog-demos](https://github.com/WildDogTeam/wilddog-demos)
+
 ## 相关文档
 
 * [Wilddog 概览](https://z.wilddog.com/overview/guide)
