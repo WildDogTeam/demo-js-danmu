@@ -97,7 +97,8 @@ $(document).ready(function() {
 	ref.child('message').on('child_added', function(snapshot) {
 		var text = snapshot.val();
 		arr.push(text);
-		var textObj = $("<div>" + text + "</div>");
+		var textObj = $("<div class=\"dm_message\"></div>");
+                textObj.text(text);
 		$(".d_show").append(textObj);
 		moveObj(textObj);
 	});
